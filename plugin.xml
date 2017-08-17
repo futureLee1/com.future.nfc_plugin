@@ -9,17 +9,17 @@
     <engine name="cordova" version=">=3.4.0"/>
   </engines>
 
-  <asset src="www/testPlugin.js" target="js/testPlugin.js"/>
+  <asset src="www/future_nfc_plugin.js" target="js/future_nfc_plugin.js"/>
 
-  <js-module src="www/testPlugin.js" name="testPlugin">
-    <clobbers target="testPlugin" />
+  <js-module src="www/future_nfc_plugin.js" name="future_nfc_plugin">
+    <clobbers target="future_nfc_plugin" />
   </js-module>
 
   <platform name="android">
 
     <config-file target="res/xml/config.xml" parent="/*">
-      <feature name="TestPlugin">
-        <param name="android-package" value="com.future.nfc_plugin.TestPlugin"/>
+      <feature name="NfcPlugin">
+        <param name="android-package" value="com.future.nfc_plugin.NfcPlugin"/>
       </feature>
     </config-file>
 
@@ -27,7 +27,7 @@
       <uses-permission android:name="android.permission.NFC" />
     </config-file>
 
-    <source-file src="src/android/TestPlugin.java" target-dir="src/com/future/nfc_plugin/"/>
+    <source-file src="src/android/NfcPlugin.java" target-dir="src/com/future/nfc_plugin/"/>
     <source-file src="src/android/Function.java" target-dir="src/com/future/nfc_plugin/"/>
     <source-file src="src/android/Conversion.java" target-dir="src/com/future/nfc_plugin/"/>
   </platform>
