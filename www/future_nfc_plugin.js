@@ -11,6 +11,6 @@ module.exports = {
 
     nfcState: function (name, successCallback, errorCallback) {
         /*cordova.exec(successCallback, errorCallback, "TestPlugin", "checkNfc", [name]);*/
-        cordova.exec(successCallback, errorCallback, "FuturePlugin", "checkNfc", [name]);
+        cordova.exec(successCallback, errorCallback, "NfcPlugin", "checkNfc", [name]);
     }
 };
