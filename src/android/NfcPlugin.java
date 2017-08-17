@@ -13,7 +13,7 @@ import android.content.Intent;
 import java.io.IOException;
 import android.widget.Toast;
 
-public class TestPlugin extends CordovaPlugin {
+public class NfcPlugin extends CordovaPlugin {
 
     private static final String STATUS_NFC_OK = "NFC_OK";
     private static final String STATUS_NO_NFC = "NO_NFC";
