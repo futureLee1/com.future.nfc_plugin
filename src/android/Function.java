@@ -1,4 +1,4 @@
-package com.example.hello;
+package com.future.nfc_plugin;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.example.hello;
+package com.future.nfc_plugin;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;

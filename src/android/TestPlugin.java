@@ -1,4 +1,4 @@
-package com.example.hello;
+package com.future.nfc_plugin;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
