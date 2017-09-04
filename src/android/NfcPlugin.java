@@ -642,6 +642,62 @@ public class NfcPlugin extends CordovaPlugin {
 
     }
 
+    private void generate_OTP_0831(IsoDep iso, CallbackContext mainCallbackContext, String input_opin) {
+        Log.d(TAG, "generate_OTP()");
+
+        int res = 0;
+
+        String strResponse[] = new String[1];
+        String strErrMsg[] = new String[1];
+        
+        res = 0;
+        res = Function.SelectFile_New(iso, strResponse, strErrMsg);
+        if(res < 0){
+            Log.e("SelectFile_New", "Card Select Failed");
+
+            String errorMsg = "Generate OTP_Select"+"\n"+"Response : "+strResponse[0]+"\n"+"Err Msg : "+strErrMsg[0];
+            mainCallbackContext.error(errorMsg);
+
+            strResponse = null;
+            strErrMsg = null;
+            return;
+        }
+
+        Log.e("SelectFile_New",""+strResponse[0]);
+
+        String strResult = strResponse[0].substring(strResponse[0].length() - 4, strResponse[0].length());
+
+        Log.e("strResult",""+strResult);
+
+        res = 0;
+        res = Function.GenerateOTP_0831(iso, strResponse, strErrMsg, "01003", input_opin);
+        if(res < 0){
+            Log.e("generate_OTP", "Create OTP Number Failed");
+
+            String errorMsg = "Generate OTP_GetData"+"\n"+"Response : "+strResponse[0]+"\n"+"Err Msg : "+strErrMsg[0];
+            mainCallbackContext.error(errorMsg);
+
+            strResponse = null;
+            strErrMsg = null;
+            return;
+        }
+        
+        Log.e("OTP Number", strResponse[0]);
+
+        String otp_Number = strResponse[0] = strResponse[0].substring(0, 6);
+        
+        mainCallbackContext.success(otp_Number);
+                    
+        if(iso.isConnected()){
+            try {
+                iso.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     public int find(String[] arr, String s){
         Log.d(TAG, "find()");
         for(int i=0; i<arr.length; i++){
