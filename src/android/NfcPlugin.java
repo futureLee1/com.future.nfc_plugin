@@ -34,7 +34,7 @@ public class NfcPlugin extends CordovaPlugin {
         Log.d(TAG, "execute_args " + args.getString(0));
         Log.d(TAG, "execute_callbackContext " + callbackContext);
 
-        String encodingData = Conversion.AES_CBC_128_ENCRYPT("12345678123456781234567800000000", "12345612345612345612345612345622");
+        /*String encodingData = Conversion.AES_CBC_128_ENCRYPT("12345678123456781234567800000000", "12345612345612345612345612345622");
         
         String decodingData = Conversion.AES_CBC_128_DECRYPT(encodingData, "12345612345612345612345612345622");
 
@@ -51,7 +51,7 @@ public class NfcPlugin extends CordovaPlugin {
         Log.e("decoding", ""+decodingData);
         Log.e("sha256_Data", ""+sha256Data);
         Log.e("hexToDex", ""+hexToDexData);
-        Log.e("calculate", ""+calData);
+        Log.e("calculate", ""+calData);*/
 
         jsonData = args.getString(0);
 
