@@ -290,6 +290,43 @@ public class Function {
 
 		return 0;
 	}
+
+	public static int GenerateOTP_0831(IsoDep iso, String[] strResponse, String[] strErrMsg, String OC, String OPIN) {
+		int res = 0;
+		String strCmd = "";
+		String strEncrypt = "";
+		String TM = "";
+		String key = "0123456789ABCDEF0123456789ABCDEF";
+		/*String key = "13131313131313133C8C21BD10674D71";*/
+		
+		// Dec To Hex Conversion
+		OC = Conversion.decToHex(Integer.parseInt(OC), 6);
+
+		// Create Time Data
+		long UTC_Milliseconds = System.currentTimeMillis();
+		long Seconds = UTC_Milliseconds / 1000;
+		TM = Conversion.decToHex((int) Seconds, 8);
+
+		/*strEncrypt = Conversion.AES_CBC_128_ENCRYPT(OC + TM + "00", key);
+
+		if (strEncrypt.equals("")) {
+			return -1;
+		}*/
+
+		strEncrypt = OPIN + OC + TM + "00";
+
+		if (strEncrypt.equals("")) {
+			return -1;
+		}
+
+		strCmd = "0022000009" + strEncrypt;
+		res = Apdu(iso, strCmd, strResponse, strErrMsg);
+		if (res < 0) {
+			return -1;
+		}
+
+		return 0;
+	}
 	
 
 }
