@@ -4,6 +4,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import android.nfc.*;
 import android.nfc.tech.IsoDep;
 import android.util.Log;
@@ -26,6 +27,8 @@ public class NfcPlugin extends CordovaPlugin {
     String jsonData = "";
 
     CallbackContext mainCallbackContext = null;
+
+    JSONArray getJsonArray = null;
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -67,12 +70,14 @@ public class NfcPlugin extends CordovaPlugin {
             return true;
         } else {
             Log.d(TAG, "getNfcStatus().equals(STATUS_NFC_OK)");
-            String message = "Welcome ! ";
+            //String message = "Welcome ! ";
             //callbackContext.success(message);
 
             mainCallbackContext = callbackContext;
             
             Log.e("execute_mainCallbackContext", ""+mainCallbackContext);
+
+            getJsonArray = args;
 
             startNfc();
 
@@ -245,6 +250,37 @@ public class NfcPlugin extends CordovaPlugin {
                 Toast.makeText(getActivity(), "G_OTP_jsonData : "+jsonData, Toast.LENGTH_SHORT).show();
                 
                 generate_OTP(iso, mainCallbackContext);
+            }
+
+            try {
+                Log.e("getJsonArray", ""+getJsonArray.getString(0));
+            } catch (JSONException e) {
+                Log.e("getJsonArray_Error", ""+e.toString());
+            }
+            
+            try {
+                
+                JSONObject jsonObject = getJsonArray.getJSONObject(0);
+                
+                Log.e("jsonObject_Data ", ""+ jsonObject);
+                Log.e("jsonObject_0_Data ", "" + jsonObject.getString("ACTION"));
+                Log.e("jsonObject_1_Data ", "" + jsonObject.getString("OC"));
+                Log.e("jsonObject_2_Data ", "" + jsonObject.getString("OPIN"));
+                
+                String action = jsonObject.getString("ACTION");
+                
+                if(action.equals("Generate_OTP_0831")) {
+                    String input_oc = jsonObject.getString("OC");
+                    String input_opin = jsonObject.getString("OPIN");
+                    
+                    
+                    Toast.makeText(getActivity(), "G_OTP_jsonData : " + action, Toast.LENGTH_SHORT).show();
+                    
+                    generate_OTP_0831(iso, mainCallbackContext, input_oc, input_opin);
+                }
+                
+            } catch (JSONException e) {
+                Log.e("Fail Make jsonArray_data", ""+e.toString());
             }
                         
             if(iso.isConnected()){
@@ -642,7 +678,7 @@ public class NfcPlugin extends CordovaPlugin {
 
     }
 
-    private void generate_OTP_0831(IsoDep iso, CallbackContext mainCallbackContext, String input_opin) {
+    private void generate_OTP_0831(IsoDep iso, CallbackContext mainCallbackContext, String input_oc, String input_opin) {
         Log.d(TAG, "generate_OTP()");
 
         int res = 0;
@@ -655,7 +691,7 @@ public class NfcPlugin extends CordovaPlugin {
         if(res < 0){
             Log.e("SelectFile_New", "Card Select Failed");
 
-            String errorMsg = "Generate OTP_Select"+"\n"+"Response : "+strResponse[0]+"\n"+"Err Msg : "+strErrMsg[0];
+            String errorMsg = "Generate OTP_0831_Select"+"\n"+"Response : "+strResponse[0]+"\n"+"Err Msg : "+strErrMsg[0];
             mainCallbackContext.error(errorMsg);
 
             strResponse = null;
@@ -670,11 +706,11 @@ public class NfcPlugin extends CordovaPlugin {
         Log.e("strResult",""+strResult);
 
         res = 0;
-        res = Function.GenerateOTP_0831(iso, strResponse, strErrMsg, "01003", input_opin);
+        res = Function.GenerateOTP_0831(iso, strResponse, strErrMsg, input_oc, input_opin);
         if(res < 0){
             Log.e("generate_OTP", "Create OTP Number Failed");
 
-            String errorMsg = "Generate OTP_GetData"+"\n"+"Response : "+strResponse[0]+"\n"+"Err Msg : "+strErrMsg[0];
+            String errorMsg = "Generate OTP_0831_GetData"+"\n"+"Response : "+strResponse[0]+"\n"+"Err Msg : "+strErrMsg[0];
             mainCallbackContext.error(errorMsg);
 
             strResponse = null;
@@ -682,7 +718,7 @@ public class NfcPlugin extends CordovaPlugin {
             return;
         }
         
-        Log.e("OTP Number", strResponse[0]);
+        Log.e("0831_OTP Number", strResponse[0]);
 
         String otp_Number = strResponse[0] = strResponse[0].substring(0, 6);
         
