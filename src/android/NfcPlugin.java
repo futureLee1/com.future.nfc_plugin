@@ -222,7 +222,7 @@ public class NfcPlugin extends CordovaPlugin {
                 iso.connect();
             }
 
-            if(jsonData.equals("Select")) {
+            /*if(jsonData.equals("Select")) {
                 Toast.makeText(getActivity(), "Select_jsonData : "+jsonData, Toast.LENGTH_SHORT).show();
 
                 Certification(iso, mainCallbackContext);
@@ -281,6 +281,55 @@ public class NfcPlugin extends CordovaPlugin {
                 
             } catch (JSONException e) {
                 Log.e("Fail Make jsonArray_data", ""+e.toString());
+            }*/
+
+            if(jsonData.equals("Select")) {
+                Toast.makeText(getActivity(), "Select_jsonData : "+jsonData, Toast.LENGTH_SHORT).show();
+
+                Certification(iso, mainCallbackContext);
+            } else if(jsonData.equals("Get_Vender_Code")) {
+                Toast.makeText(getActivity(), "Vender_jsonData : "+jsonData, Toast.LENGTH_SHORT).show();
+
+                getData_Vender_Code(iso, mainCallbackContext);
+            } else if(jsonData.equals("Get_Valid_Date")) {
+                Toast.makeText(getActivity(), "Valid_date_jsonData : "+jsonData, Toast.LENGTH_SHORT).show();
+                
+                getData_Valid_Date(iso, mainCallbackContext);
+            } else if(jsonData.equals("Get_Serial_Number")) {
+                Toast.makeText(getActivity(), "SN_jsonData : "+jsonData, Toast.LENGTH_SHORT).show();
+                
+                getData_Serial_Num(iso, mainCallbackContext);
+            } else if(jsonData.equals("Generate_OTP")) {
+                Toast.makeText(getActivity(), "G_OTP_jsonData : "+jsonData, Toast.LENGTH_SHORT).show();
+                
+                generate_OTP(iso, mainCallbackContext);
+            } else {
+                
+                try {
+                    Log.e("getJsonArray", ""+getJsonArray.getString(0));
+                    
+                    JSONObject jsonObject = getJsonArray.getJSONObject(0);
+                    
+                    Log.e("jsonObject_Data ", ""+ jsonObject);
+                    Log.e("jsonObject_0_Data ", "" + jsonObject.getString("ACTION"));
+                    Log.e("jsonObject_1_Data ", "" + jsonObject.getString("OC"));
+                    Log.e("jsonObject_2_Data ", "" + jsonObject.getString("OPIN"));
+                    
+                    String action = jsonObject.getString("ACTION");
+                    
+                    if(action.equals("Generate_OTP_0831")) {
+                        String input_oc = jsonObject.getString("OC");
+                        String input_opin = jsonObject.getString("OPIN");
+                        
+                        
+                        Toast.makeText(getActivity(), "G_OTP_jsonData : " + action, Toast.LENGTH_SHORT).show();
+                        
+                        generate_OTP_0831(iso, mainCallbackContext, input_oc, input_opin);
+                    }
+                    
+                } catch (JSONException e) {
+                    Log.e("Fail Make jsonArray_data", ""+e.toString());
+                }               
             }
                         
             if(iso.isConnected()){
