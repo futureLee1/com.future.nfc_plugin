@@ -757,6 +757,18 @@ public class NfcPlugin extends CordovaPlugin {
         res = 0;
         res = Function.GenerateOTP_0831(iso, strResponse, strErrMsg, input_oc, input_opin);
         if(res < 0){
+            if(strResponse[0].equals("6982")) {
+                Log.e("generate_OTP", "Wrong OPIN");
+
+                /*String errorMsg = "Wrong OPIN";*/
+                String errorMsg = "6982";
+                mainCallbackContext.error(errorMsg);
+
+                strResponse = null;
+                strErrMsg = null;
+                return;
+            }
+            
             Log.e("generate_OTP", "Create OTP Number Failed");
 
             String errorMsg = "Generate OTP_0831_GetData"+"\n"+"Response : "+strResponse[0]+"\n"+"Err Msg : "+strErrMsg[0];
